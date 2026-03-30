@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
+import ProgressBar from "./ui/progressBar";
 
-export default function ResumoMeta() {
+export default function ResumoMeta(props: any) {
   return (
     <View style={style.container}>
       <View style={style.container_title}>
@@ -22,7 +23,14 @@ export default function ResumoMeta() {
           </Svg>
         </View>
         <Text style={style.font_title}>Meta Atual</Text>
-        <Text style={style.font_value}>82%</Text>
+        <Text style={style.font_percentage}>82%</Text>
+      </View>
+      <View style={style.container_bar}>
+        <ProgressBar percentage={props.percentage} color={"#1A3F7A"} />
+      </View>
+      <View style={style.container_title}>
+        <Text style={style.font_value}>R${props.value.toFixed(2)}</Text>
+        <Text style={style.font_value}>R${props.meta.toFixed(2)}</Text>
       </View>
     </View>
   );
@@ -34,6 +42,11 @@ const style = StyleSheet.create({
     height: 117,
     backgroundColor: "#ffff",
     borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   container_title: {
@@ -51,16 +64,32 @@ const style = StyleSheet.create({
     backgroundColor: "#FFF3D6",
   },
 
+  container_bar: {
+    paddingTop: 15,
+    paddingLeft: 19,
+    width: 320,
+  },
+
   font_title: {
     paddingTop: 5,
     paddingLeft: 10,
     fontSize: 15,
-    fontWeight: "condensedBold",
+    fontWeight: "bold",
+    color: "#0A1628",
   },
 
-  font_value: {
+  font_percentage: {
     paddingTop: 2,
     paddingLeft: 150,
     fontSize: 25,
+    fontWeight: "bold",
+    color: "#0F2B5B",
+  },
+
+  font_value: {
+    paddingLeft: 10,
+    paddingRight: 170,
+    fontSize: 12,
+    color: "#5A6B82",
   },
 });
