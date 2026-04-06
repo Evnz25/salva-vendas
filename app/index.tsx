@@ -1,9 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import Clientes from "@/view/clientes";
+import { StyleSheet } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text>Salva-vendas</Text>
-    </View>
+    <SafeAreaProvider>
+      {/*<Dashboard></Dashboard>*/}
+      <Clientes></Clientes>
+    </SafeAreaProvider>
   );
 }
 const styles = StyleSheet.create({
