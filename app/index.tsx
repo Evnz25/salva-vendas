@@ -1,4 +1,4 @@
-import Clientes from "@/view/clientes";
+import CadastroCliente from "@/view/cadastroCliente";
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -6,7 +6,8 @@ export default function HomeScreen() {
   return (
     <SafeAreaProvider>
       {/*<Dashboard></Dashboard>*/}
-      <Clientes></Clientes>
+      {/*<Clientes></Clientes>*/}
+      <CadastroCliente />
     </SafeAreaProvider>
   );
 }
