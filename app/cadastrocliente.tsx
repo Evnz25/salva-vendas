@@ -1,4 +1,3 @@
-import FormCadastroCliente from "@/components/formCadastroCliente";
 import Header from "@/components/ui/header";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,7 +8,7 @@ export default function CadastroCliente() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header title={"Novo Cliente"}></Header>
         <View style={style.container_content}>
-          <FormCadastroCliente />
+          {/* <FormCadastroCliente /> */}
         </View>
       </ScrollView>
     </SafeAreaView>

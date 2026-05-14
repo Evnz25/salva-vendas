@@ -1,15 +1,57 @@
+import { Cliente } from "@/interfaces/Cliente";
+import { postCliente } from "@/services/clienteService";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import MaskInput, { Masks } from "react-native-mask-input";
 import ButtonSave from "./ui/buttonSave";
 
-export default function FormCadastroCliente() {
+type FormPros = {
+  onSucess: () => void;
+};
+
+export default function FormCadastroCliente({ onSucess }: FormPros) {
   const svgPath =
     "M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z";
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [statusPlano, setStatusPlano] = useState("PROSPECCAO");
 
+  const [salvando, setSalvando] = useState(false);
+
+  const handleSalvar = async () => {
+    if (!nome || !telefone) {
+      Alert.alert("Atencao", "Faltou preencher o nome e o telefone!");
+      return;
+    }
+
+    const novoCliente: Cliente = {
+      nome: nome,
+      telefone: telefone,
+      email: email,
+      //status: status,
+    };
+
+    try {
+      setSalvando(true);
+      await postCliente(novoCliente);
+
+      Alert.alert("Sucesso!", "Cliente novo cadastrado com sucesso.");
+      onSucess();
+    } catch (err) {
+      Alert.alert("Erro!", "Houve um erro ao cadastrar o cliente.");
+    } finally {
+      setSalvando(false);
+    }
+  };
   return (
     <View style={style.container}>
       <Text style={style.font_title}>Cadastrar Novo Cliente</Text>
@@ -20,6 +62,7 @@ export default function FormCadastroCliente() {
           style={style.font_input}
           placeholder="Nome"
           placeholderTextColor={"#A0AEC0"}
+          onChangeText={setNome}
         />
       </View>
 
@@ -43,6 +86,7 @@ export default function FormCadastroCliente() {
           style={style.font_input}
           placeholder="exemplo@gmail.com"
           placeholderTextColor={"#A0AEC0"}
+          onChangeText={setEmail}
         />
       </View>
 
@@ -67,7 +111,15 @@ export default function FormCadastroCliente() {
         </View>
       </View>
       <View style={style.container_button}>
-        <ButtonSave svg={svgPath} title={"Salvar cliente"} />
+        {salvando ? (
+          <ActivityIndicator size="large" color="#0F2B5B" />
+        ) : (
+          <ButtonSave
+            svg={svgPath}
+            title={"Salvar cliente"}
+            onPress={handleSalvar}
+          />
+        )}
       </View>
     </View>
   );

@@ -3,7 +3,11 @@ import Svg, { Path } from "react-native-svg";
 
 export default function ButtonSave(props: any) {
   return (
-    <TouchableOpacity style={style.container} activeOpacity={0.8}>
+    <TouchableOpacity
+      style={style.container}
+      activeOpacity={0.8}
+      onPress={props.onPress}
+    >
       <Svg
         width={30}
         height={30}
@@ -12,7 +16,7 @@ export default function ButtonSave(props: any) {
         strokeWidth={1}
         stroke={"#FFFF"}
       >
-        <Path stroke-linecap="round" stroke-linejoin="round" d={props.svg} />
+        <Path strokeLinecap="round" strokeLinejoin="round" d={props.svg} />
       </Svg>
       <Text style={style.font_button}>{props.title}</Text>
     </TouchableOpacity>
