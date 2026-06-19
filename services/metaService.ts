@@ -1,9 +1,5 @@
 import { Meta } from "@/interfaces/Meta";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://127.0.0.1:3000",
-});
+import api from "./api";
 
 export const postMeta = async (metaData: Meta) => {
   try {
@@ -12,5 +8,15 @@ export const postMeta = async (metaData: Meta) => {
   } catch (error) {
     console.error("Erro ao criar meta:", error);
     throw error;
+  }
+};
+
+export const getMetaAtual = async (id: number) => {
+  try {
+    const response = await api.get(`/usuarios/${id}/meta-atual`);
+    return response.data;
+  } catch (err) {
+    console.error("Erro ao buscar meta atual:", err);
+    throw err;
   }
 };

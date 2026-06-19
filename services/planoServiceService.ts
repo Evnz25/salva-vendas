@@ -1,9 +1,5 @@
 import { PlanoServico } from "@/interfaces/PlanoServico";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://127.0.0.1:3000",
-});
+import api from "./api";
 
 export const postPlanoService = async (planoServiceData: PlanoServico) => {
   try {

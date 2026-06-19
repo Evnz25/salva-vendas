@@ -1,9 +1,5 @@
 import { Venda } from "@/interfaces/Venda";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://127.0.0.1:3000",
-});
+import api from "./api";
 
 export const postVenda = async (vendaData: Venda) => {
   try {
@@ -21,6 +17,18 @@ export const getGanhoMes = async () => {
     return response.data;
   } catch (err) {
     console.error("Erro ao consultar ganho-mes: ", err);
+    throw err;
+  }
+};
+
+export const getGanhoGeralMes = async () => {
+  console.log("CHEGOU A REQUISIÇÃO NO NODE. BUSCANDO NO BANCO...");
+
+  try {
+    const response = await api.get("/ganhos-geral-e-por-mes");
+    return response.data;
+  } catch (err) {
+    console.error("Erro ao consultar ganhos-geral-e-por-mes: ", err);
     throw err;
   }
 };

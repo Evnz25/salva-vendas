@@ -1,16 +1,64 @@
+import { TipoHistoricoMensal } from "@/interfaces/GanhoGeralMes";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 
-export default function GraficoVendas() {
-  const barData = [
-    { value: 1500, label: "Jan" },
-    { value: 3000, label: "Fev" },
-    { value: 4500, label: "Mar" },
-    { value: 7800, label: "Abr" },
-    { value: 4000, label: "Mai" },
-    { value: 2460, label: "Jun" },
+type GraficoVendasProps = {
+  dados: TipoHistoricoMensal[] | null;
+};
+
+export default function GraficoVendas({ dados }: GraficoVendasProps) {
+  if (!dados) {
+    return (
+      <View
+        style={[
+          styles.card,
+          { justifyContent: "center", alignItems: "center", height: 250 },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#0F2B5B" />
+      </View>
+    );
+  }
+
+  if (dados.length === 0) {
+    return (
+      <View
+        style={[
+          styles.card,
+          { justifyContent: "center", alignItems: "center", height: 250 },
+        ]}
+      >
+        <Text style={{ color: "#7F8C8D", fontSize: 16 }}>
+          Nenhum dado nos últimos 6 meses
+        </Text>
+      </View>
+    );
+  }
+
+  const meses = [
+    "Jan",
+    "Fev",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Set",
+    "Out",
+    "Nov",
+    "Dez",
   ];
+
+  const barData = dados.map((item) => {
+    return {
+      value: item.totalGanhos,
+      // Se o Mongo mandar mes: 3. O JS vai pegar nomesMeses[2], que é "Mar"
+      label: meses[item._id.mes - 1],
+    };
+  });
+
   return (
     <View style={styles.card}>
       <Text style={styles.title}>Histórico de Vendas</Text>

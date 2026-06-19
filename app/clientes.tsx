@@ -3,8 +3,11 @@ import ButtonAddClient from "@/components/ui/buttonAddCliente";
 import ClientInformation from "@/components/ui/clientInformation";
 import Header from "@/components/ui/header";
 import NavBar from "@/components/ui/navbar";
-import { useState } from "react";
+import { Cliente } from "@/interfaces/Cliente";
+import { getClientesTotal } from "@/services/clienteService";
+import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Modal,
   ScrollView,
   StyleSheet,
@@ -15,13 +18,34 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function () {
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [clientesTotal, setClientesTotal] = useState<Cliente[]>([]);
+
+  useEffect(() => {
+    const buscarClientes = async () => {
+      try {
+        const data = await getClientesTotal();
+        setClientesTotal(data);
+      } catch (error) {
+        console.error("Erro ao buscar clientes recentes: ", error);
+      }
+    };
+    buscarClientes();
+  }, []);
 
   return (
     <SafeAreaView style={style.container}>
       <Header title={"Clientes"} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={style.container_content}>
-          <ClientInformation />
+          {clientesTotal.length === 0 ? (
+            <View style={{ padding: 20, alignItems: "center" }}>
+              <ActivityIndicator size="small" color="#0A1628" />
+            </View>
+          ) : (
+            clientesTotal.map((cliente) => (
+              <ClientInformation cliente={cliente} />
+            ))
+          )}
         </View>
       </ScrollView>
       <View style={style.botao_flutuante}>
@@ -35,7 +59,6 @@ export default function () {
         onRequestClose={() => setModalVisivel(false)}
       >
         <View style={style.modalOverlay}>
-          {/* Fundo escuro clicável para fechar */}
           <TouchableOpacity
             style={style.fecharFundo}
             onPress={() => setModalVisivel(false)}

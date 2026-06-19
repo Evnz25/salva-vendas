@@ -1,14 +1,25 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Cliente } from "@/interfaces/Cliente";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import ClientInformation from "./ui/clientInformation";
 
-export default function UltimosClientes() {
+type UltimosClientesProps = {
+  clientes: Cliente[];
+};
+
+export default function UltimosClientes({ clientes }: UltimosClientesProps) {
   return (
     <View style={style.container}>
       <View style={style.container_title}>
         <Text style={style.font_title}>Últimos Clientes Cadastrados</Text>
         <Text style={style.font_also}>Ver todos {`>`}</Text>
       </View>
-      <ClientInformation />
+      {clientes.length === 0 ? (
+        <View style={{ padding: 20, alignItems: "center" }}>
+          <ActivityIndicator size="small" color="#0A1628" />
+        </View>
+      ) : (
+        clientes.map((cliente) => <ClientInformation cliente={cliente} />)
+      )}
     </View>
   );
 }
