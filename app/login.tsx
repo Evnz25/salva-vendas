@@ -1,4 +1,5 @@
 import { fazerLogin } from "@/services/authService";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -17,6 +18,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const navigation = useNavigation<any>();
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -28,9 +30,10 @@ export default function Login() {
 
       await fazerLogin(email, senha);
 
-      // Se passou da linha acima, o login deu certo e o token foi salvo.
-      // Agora você navega o usuário para o Dashboard!
-      // ex: navigation.replace('Dashboard');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "index" }],
+      });
     } catch (error: any) {
       Alert.alert("Falha no login", error.message);
     } finally {
