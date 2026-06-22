@@ -22,8 +22,6 @@ export const getGanhoMes = async () => {
 };
 
 export const getGanhoGeralMes = async () => {
-  console.log("CHEGOU A REQUISIÇÃO NO NODE. BUSCANDO NO BANCO...");
-
   try {
     const response = await api.get("/ganhos-geral-e-por-mes");
     return response.data;

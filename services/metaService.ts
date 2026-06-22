@@ -11,7 +11,7 @@ export const postMeta = async (metaData: Meta) => {
   }
 };
 
-export const getMetaAtual = async (id: number) => {
+export const getMetaAtual = async (id: string) => {
   try {
     const response = await api.get(`/usuarios/${id}/meta-atual`);
     return response.data;

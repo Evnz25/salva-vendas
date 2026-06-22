@@ -1,6 +1,6 @@
-export type PlanoServico = {
+export type Plano = {
   _id?: string;
   tipo_plano: string;
   valor: number;
-  status: boolean;
+  status: string;
 };

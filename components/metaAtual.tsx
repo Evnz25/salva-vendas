@@ -4,7 +4,19 @@ import Svg, { Path } from "react-native-svg";
 import MetaBox from "./ui/metaBox";
 import ProgressBar from "./ui/progressBar";
 
-export default function MetaAtual(props: any) {
+type MetaAtualProps = {
+  percentage: number;
+  value: number;
+  meta: number;
+  diasRestantes: number;
+};
+
+export default function MetaAtual({
+  percentage,
+  value,
+  meta,
+  diasRestantes,
+}: MetaAtualProps) {
   return (
     <View>
       <LinearGradient style={style.container} colors={["#0F2B5B", "#071A3C"]}>
@@ -28,21 +40,28 @@ export default function MetaAtual(props: any) {
           <Text style={style.font_title}>Meta Atual</Text>
         </View>
         <View style={style.container_content}>
-          <MetaBox title={"Meta"} value={31} color={"#FFFF"} />
-          <MetaBox title={"Alcançado"} value={24} color={"#05DF72"} />
-          <MetaBox title={"Dias restantes"} value={26} color={"#F5A623"} />
+          {/* Removido o R$ */}
+          <MetaBox title={"Meta"} value={meta} color={"#FFFF"} />
+          <MetaBox title={"Alcançado"} value={value} color={"#05DF72"} />
+          <MetaBox
+            title={"Dias restantes"}
+            value={diasRestantes}
+            color={"#F5A623"}
+          />
         </View>
+
         <View style={style.container_barbox}>
           <View style={style.container_values}>
             <Text style={style.font_barname}>Progresso</Text>
-            <Text style={style.font_percentage}>82%</Text>
+            <Text style={style.font_percentage}>{percentage.toFixed(0)}%</Text>
           </View>
           <View style={style.container_bar}>
-            <ProgressBar percentage={props.percentage} color={"#FFB900"} />
+            <ProgressBar percentage={percentage} color={"#FFB900"} />
           </View>
           <View style={style.container_valuesmax}>
-            <Text style={style.font_value}>R${props.value.toFixed(2)}</Text>
-            <Text style={style.font_value}>R${props.meta.toFixed(2)}</Text>
+            {/* Removido o R$ e o .toFixed(2) já que não tem centavos em vendas */}
+            <Text style={style.font_value}>{value} Vendas</Text>
+            <Text style={style.font_value}>{meta} Vendas</Text>
           </View>
         </View>
       </LinearGradient>
