@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import MaskInput, { Masks } from "react-native-mask-input";
 import ButtonSave from "./ui/buttonSave";
+import { PlanStatus } from "./ui/planName";
 
 type FormPros = {
   onSucess: () => void;
@@ -23,8 +24,7 @@ export default function FormCadastroCliente({ onSucess }: FormPros) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
-  const [statusPlano, setStatusPlano] = useState("PROSPECCAO");
-
+  const [statusPlano, setStatusPlano] = useState<PlanStatus>("EM_NEGOCIACAO");
   const [salvando, setSalvando] = useState(false);
 
   const handleSalvar = async () => {
@@ -33,11 +33,13 @@ export default function FormCadastroCliente({ onSucess }: FormPros) {
       return;
     }
 
+    const telefoneLimpo = telefone.replace(/\D/g, "");
+
     const novoCliente: Cliente = {
       nome: nome,
-      telefone: telefone,
-      email: email,
-      status: status,
+      telefone: telefoneLimpo,
+      email: email.trim().toLowerCase(),
+      status: statusPlano,
     };
 
     try {

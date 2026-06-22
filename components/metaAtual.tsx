@@ -40,7 +40,6 @@ export default function MetaAtual({
           <Text style={style.font_title}>Meta Atual</Text>
         </View>
         <View style={style.container_content}>
-          {/* Removido o R$ */}
           <MetaBox title={"Meta"} value={meta} color={"#FFFF"} />
           <MetaBox title={"Alcançado"} value={value} color={"#05DF72"} />
           <MetaBox
@@ -53,13 +52,15 @@ export default function MetaAtual({
         <View style={style.container_barbox}>
           <View style={style.container_values}>
             <Text style={style.font_barname}>Progresso</Text>
+            {/* toFixed(0) garante que não tenha números quebrados na interface */}
             <Text style={style.font_percentage}>{percentage.toFixed(0)}%</Text>
           </View>
+
           <View style={style.container_bar}>
             <ProgressBar percentage={percentage} color={"#FFB900"} />
           </View>
+
           <View style={style.container_valuesmax}>
-            {/* Removido o R$ e o .toFixed(2) já que não tem centavos em vendas */}
             <Text style={style.font_value}>{value} Vendas</Text>
             <Text style={style.font_value}>{meta} Vendas</Text>
           </View>
@@ -75,14 +76,12 @@ const style = StyleSheet.create({
     height: 274,
     borderRadius: 20,
   },
-
   container_title: {
     flexDirection: "row",
     paddingTop: 25,
     paddingLeft: 25,
     alignItems: "center",
   },
-
   container_svg: {
     width: 36,
     height: 36,
@@ -91,34 +90,33 @@ const style = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "#32486F",
   },
-
   container_content: {
     paddingTop: 17,
     paddingLeft: 25,
     gap: 10,
     flexDirection: "row",
   },
-
   container_barbox: {
     paddingTop: 30,
-    paddingLeft: 12,
     justifyContent: "center",
   },
 
+  // 🚀 MUDANÇAS AQUI PARA DEIXAR RESPONSIVO AOS DADOS DO BANCO:
   container_values: {
-    gap: 180,
     flexDirection: "row",
+    justifyContent: "space-between", // Empurra o "Progresso" pra esquerda e a "%" pra direita
+    paddingHorizontal: 25, // Mantém uma margem segura das bordas
+    alignItems: "center",
   },
-
   container_bar: {
     paddingTop: 5,
     paddingLeft: 19,
     width: 300,
   },
-
   container_valuesmax: {
-    gap: 130,
     flexDirection: "row",
+    justifyContent: "space-between", // Separa as vendas de forma dinâmica
+    paddingHorizontal: 25,
   },
 
   font_title: {
@@ -127,21 +125,16 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     paddingLeft: 10,
   },
-
   font_barname: {
-    paddingLeft: 20,
     color: "rgba(255, 255, 255, 0.7)",
   },
-
   font_percentage: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#FFFF",
   },
-
   font_value: {
     paddingTop: 8,
-    paddingLeft: 20,
     fontSize: 12,
     color: "rgba(255, 255, 255, 0.7)",
   },

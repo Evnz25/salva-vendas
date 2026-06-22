@@ -6,7 +6,7 @@ export default function NavBar() {
   return (
     <View style={styles.container}>
       {/* Início */}
-      <Link href={"/"} asChild>
+      <Link href={"/app" as any} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -27,7 +27,7 @@ export default function NavBar() {
       </Link>
 
       {/* Clientes */}
-      <Link href={"/clientes"} asChild>
+      <Link href={"/app/clientes"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -48,7 +48,7 @@ export default function NavBar() {
       </Link>
 
       {/* Planos */}
-      <Link href={"/planos"} asChild>
+      <Link href={"/app/planos"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -69,7 +69,7 @@ export default function NavBar() {
       </Link>
 
       {/* Vendas (Novo Item) */}
-      <Link href={"/vendas"} asChild>
+      <Link href={"/app/vendas"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -90,7 +90,7 @@ export default function NavBar() {
       </Link>
 
       {/* Metas */}
-      <Link href={"/metas"} asChild>
+      <Link href={"/app/metas"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}

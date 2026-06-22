@@ -1,5 +1,6 @@
-import { fazerLogin } from "@/services/authService";
-import { useNavigation } from "@react-navigation/native";
+import api from "@/services/api";
+import { useAuth } from "@/services/authContext";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -15,29 +16,21 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Login() {
+  const { login } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
-  const navigation = useNavigation<any>();
 
   const handleLogin = async () => {
-    if (!email || !senha) {
-      Alert.alert("Atenção", "Preencha o e-mail e a senha.");
-      return;
-    }
     try {
-      setCarregando(true);
+      const resposta = await api.post("/login", { email, senha });
 
-      await fazerLogin(email, senha);
+      await login(resposta.data.token, resposta.data.usuario);
 
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "index" }],
-      });
-    } catch (error: any) {
-      Alert.alert("Falha no login", error.message);
-    } finally {
-      setCarregando(false);
+      router.replace("/app" as any);
+    } catch (error) {
+      Alert.alert("Erro", "E-mail ou senha incorretos.");
     }
   };
 
@@ -100,6 +93,16 @@ export default function Login() {
                 ) : (
                   <Text style={style.button_text}>Entrar</Text>
                 )}
+              </TouchableOpacity>
+            </View>
+
+            {/* NOVO LINK DE CADASTRO AQUI (Abaixo do botão de entrar) */}
+            <View style={style.footer_link}>
+              <Text style={style.footer_text}>Não possui uma conta? </Text>
+              <TouchableOpacity
+                onPress={() => router.push("/auth/cadastro" as any)}
+              >
+                <Text style={style.footer_text_bold}>Cadastre-se</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -176,6 +179,23 @@ const style = StyleSheet.create({
     height: 45,
     fontSize: 14,
     color: "#1A202C",
+  },
+
+  footer_link: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+
+  footer_text: {
+    color: "#5A6B82",
+    fontSize: 14,
+  },
+
+  footer_text_bold: {
+    color: "#0F2B5B",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 
   forgot_password: {

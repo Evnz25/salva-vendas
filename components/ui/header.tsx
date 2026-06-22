@@ -1,20 +1,35 @@
+import { useAuth } from "@/services/authContext";
 import { Text } from "@react-navigation/elements";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 export default function Header(props: any) {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Sair do sistema",
+      "Tem certeza que deseja encerrar sua sessão?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Sair",
+          style: "destructive",
+          onPress: async () => {
+            await logout();
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.container_text}>
         <Text style={styles.font_app}>CRM</Text>
         <Text style={styles.font_title}>{props.title}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.button_logout}
-        onPress={() => {
-          console.log("Sair do app");
-        }}
-      >
+      <TouchableOpacity style={styles.button_logout} onPress={handleLogout}>
         <Svg
           width={24}
           height={24}

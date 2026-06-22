@@ -1,7 +1,7 @@
 import { PlanStatus } from "@/components/ui/planName";
 
 export type Cliente = {
-  _id: string;
+  _id?: string;
   nome: string;
   email: string;
   telefone: string;

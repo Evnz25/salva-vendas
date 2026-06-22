@@ -2,7 +2,18 @@ import { StyleSheet, Text, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import ProgressBar from "./ui/progressBar";
 
-export default function ResumoMeta(props: any) {
+// 1. Criamos a tipagem correta
+type ResumoMetaProps = {
+  percentage: number;
+  value: number;
+  meta: number;
+};
+
+export default function ResumoMeta({
+  percentage,
+  value,
+  meta,
+}: ResumoMetaProps) {
   return (
     <View style={style.container}>
       <View style={style.container_title}>
@@ -23,14 +34,16 @@ export default function ResumoMeta(props: any) {
           </Svg>
         </View>
         <Text style={style.font_title}>Meta Atual</Text>
-        <Text style={style.font_percentage}>82%</Text>
+        {/* Usamos toFixed(0) para não mostrar casas decimais na porcentagem */}
+        <Text style={style.font_percentage}>{percentage.toFixed(0)}%</Text>
       </View>
       <View style={style.container_bar}>
-        <ProgressBar percentage={props.percentage} color={"#1A3F7A"} />
+        <ProgressBar percentage={percentage} color={"#1A3F7A"} />
       </View>
-      <View style={style.container_title}>
-        <Text style={style.font_value}>R${props.value.toFixed(2)}</Text>
-        <Text style={style.font_value}>R${props.meta.toFixed(2)}</Text>
+      <View style={style.container_title_values}>
+        {/* 2. Removemos o R$ e o .toFixed(2) já que é quantidade de vendas */}
+        <Text style={style.font_value}>{value} Vendas</Text>
+        <Text style={style.font_value}>{meta} Vendas</Text>
       </View>
     </View>
   );
@@ -48,13 +61,18 @@ const style = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-
   container_title: {
     flexDirection: "row",
     paddingTop: 10,
     paddingLeft: 10,
   },
-
+  container_title_values: {
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingLeft: 10,
+    justifyContent: "space-between", // Empurra um texto pra cada lado
+    paddingRight: 30, // Dá uma margem na direita
+  },
   container_svg: {
     width: 24,
     height: 24,
@@ -63,13 +81,11 @@ const style = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "#FFF3D6",
   },
-
   container_bar: {
     paddingTop: 15,
     paddingLeft: 19,
     width: 320,
   },
-
   font_title: {
     paddingTop: 5,
     paddingLeft: 10,
@@ -77,18 +93,16 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     color: "#0A1628",
   },
-
   font_percentage: {
     paddingTop: 2,
-    paddingLeft: 150,
+    marginLeft: "auto", // Joga a porcentagem para o canto direito
+    paddingRight: 20,
     fontSize: 25,
     fontWeight: "bold",
     color: "#0F2B5B",
   },
-
   font_value: {
     paddingLeft: 10,
-    paddingRight: 170,
     fontSize: 12,
     color: "#5A6B82",
   },

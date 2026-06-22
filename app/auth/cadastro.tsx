@@ -1,5 +1,6 @@
 import { Usuario } from "@/interfaces/Usuario";
 import { postUsuario } from "@/services/usuarioService";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -40,18 +41,35 @@ export default function Cadastro({ navigation }: any) {
       const telefoneLimpo = telefone.replace(/\D/g, "");
       const novoUsuario: Usuario = {
         nome: nome,
-        email: email,
+        email: email.trim().toLowerCase(),
         telefone: telefoneLimpo,
         senha: senha,
       };
 
       await postUsuario(novoUsuario);
 
-      Alert.alert("Sucesso!", "Sua conta foi criada com sucesso.", [
-        { text: "Fazer Login", onPress: () => navigation.navigate("Login") },
-      ]);
+      Alert.alert(
+        "Sucesso!",
+        "Sua conta foi criada com sucesso.",
+        [
+          {
+            text: "Fazer Login",
+            onPress: () => {
+              // Mudamos de push para replace e colocamos o 'as any' para garantir que o Expo Router execute o redirecionamento
+              router.replace("/auth/login" as any);
+            },
+          },
+        ],
+        { cancelable: false }, // Impede o usuário de fechar o alerta clicando fora dele, forçando-o a clicar no botão
+      );
     } catch (error: any) {
-      Alert.alert("Ops!", error.message || "Erro ao realizar cadastro.");
+      const mensagemServidor =
+        error.response?.data?.detalhe || // Tenta pegar o "detalhe"
+        error.response?.data?.erro || // Se não tiver, tenta pegar o "erro"
+        "Erro ao realizar cadastro. Verifique sua conexão."; // Fallback genérico
+
+      Alert.alert("Ops!", mensagemServidor);
+      console.error("Erro completo:", error.response?.data); // Joga no terminal para você ver
     } finally {
       setCarregando(false);
     }
@@ -150,7 +168,9 @@ export default function Cadastro({ navigation }: any) {
             {/* Link para voltar ao Login */}
             <View style={style.footer_link}>
               <Text style={style.footer_text}>Já possui uma conta? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <TouchableOpacity
+                onPress={() => router.push("/auth/login" as any)}
+              >
                 <Text style={style.footer_text_bold}>Faça Login</Text>
               </TouchableOpacity>
             </View>

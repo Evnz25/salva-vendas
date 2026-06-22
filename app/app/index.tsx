@@ -11,7 +11,9 @@ import { Cliente } from "@/interfaces/Cliente";
 import { TipoGanhoGeralMes } from "@/interfaces/GanhoGeralMes";
 import { TipoGanhoMes } from "@/interfaces/GanhoMes";
 import { getClientesRecentes } from "@/services/clienteService";
+import { getMetaAtual } from "@/services/metaService"; // NOVA IMPORTAÇÃO
 import { getGanhoGeralMes, getGanhoMes } from "@/services/vendasService";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // NOVA IMPORTAÇÃO
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
@@ -20,6 +22,7 @@ export default function Dashboard() {
     null,
   );
   const [clientesRecentes, setClientesRecentes] = useState<Cliente[]>([]);
+  const [meta, setMeta] = useState<any>(null); // NOVO STATE PARA A META
 
   useEffect(() => {
     const buscarGanhos = async () => {
@@ -49,7 +52,6 @@ export default function Dashboard() {
     const buscarClientes = async () => {
       try {
         const data = await getClientesRecentes();
-        console.log(data);
         setClientesRecentes(data);
       } catch (error) {
         console.error("Erro ao buscar clientes recentes: ", error);
@@ -57,6 +59,34 @@ export default function Dashboard() {
     };
     buscarClientes();
   }, []);
+
+  // NOVO USEFFECT PARA BUSCAR A META
+  useEffect(() => {
+    const buscarMeta = async () => {
+      try {
+        const usuarioString = await AsyncStorage.getItem("@usuario");
+        if (!usuarioString) return;
+        const usuario = JSON.parse(usuarioString);
+
+        const metaData = await getMetaAtual(usuario.id);
+        setMeta(metaData);
+      } catch (error) {
+        // Ignoramos o console.error aqui caso o usuário simplesmente não tenha meta cadastrada ainda
+      }
+    };
+    buscarMeta();
+  }, []);
+
+  // MATEMÁTICA DA META
+  const alvo = meta ? meta.qtd_vendas_alvo : 0;
+  const qtdVendasRealizadas = ganhoMensalData
+    ? ganhoMensalData.quantidadeVendas
+    : 0;
+  let porcentagem = 0;
+
+  if (meta && alvo > 0) {
+    porcentagem = Math.min((qtdVendasRealizadas / alvo) * 100, 100);
+  }
 
   return (
     <SafeAreaView style={style.container}>
@@ -70,7 +100,14 @@ export default function Dashboard() {
           <GraficoVendas
             dados={ganhosMensais ? ganhosMensais.historicoMensal : null}
           />
-          <ResumoMeta percentage={82} value={24600} meta={30000} />
+
+          {/* AQUI PASSAMOS OS DADOS DINÂMICOS CALCULADOS */}
+          <ResumoMeta
+            percentage={porcentagem}
+            value={qtdVendasRealizadas}
+            meta={alvo}
+          />
+
           <UltimosClientes clientes={clientesRecentes} />
         </View>
       </ScrollView>
@@ -90,5 +127,6 @@ const style = StyleSheet.create({
     paddingTop: 20,
     gap: 20,
     alignItems: "center",
+    paddingBottom: 100, // Adicionado um respiro no fundo para o NavBar não sobrepor os clientes
   },
 });
