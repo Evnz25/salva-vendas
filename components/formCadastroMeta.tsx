@@ -38,15 +38,15 @@ export default function FormCadastroMeta({ onSave }: { onSave: () => void }) {
     try {
       setSalvando(true);
       await postMeta({
-        qtd_vendas_alvo: Number(qtdVendas), // Converte o texto para número
-        dta_inicial: new Date(), // A data de início é o momento do cadastro
-        dta_final: dataFinal, // A data que o usuário escolheu no calendário
-        status: true, // Meta nasce ativa
+        qtd_vendas_alvo: Number(qtdVendas),
+        dta_inicial: new Date(),
+        dta_final: dataFinal,
+        status: true,
       });
 
       Alert.alert("Sucesso!", "Nova meta estabelecida!");
       setQtdVendas("");
-      onSave(); // Recarrega a tela
+      onSave();
     } catch (error: any) {
       Alert.alert("Erro", "Falha ao salvar a meta.");
     } finally {
@@ -58,7 +58,6 @@ export default function FormCadastroMeta({ onSave }: { onSave: () => void }) {
     <View style={style.container}>
       <Text style={style.font_title}>Cadastrar Nova Meta</Text>
 
-      {/* NOVO CAMPO: Quantidade de Vendas */}
       <Text style={style.font_label}>Alvo de Vendas (Qtd)</Text>
       <View style={style.container_form}>
         <TextInput
@@ -71,7 +70,6 @@ export default function FormCadastroMeta({ onSave }: { onSave: () => void }) {
         />
       </View>
 
-      {/* PRAZO FINAL */}
       <Text style={style.font_label}>Data Final da Meta</Text>
       <View style={style.container_form}>
         <TouchableOpacity

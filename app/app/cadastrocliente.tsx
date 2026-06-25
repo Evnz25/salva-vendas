@@ -7,9 +7,7 @@ export default function CadastroCliente() {
     <SafeAreaView style={style.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header title={"Novo Cliente"}></Header>
-        <View style={style.container_content}>
-          {/* <FormCadastroCliente /> */}
-        </View>
+        <View style={style.container_content}></View>
       </ScrollView>
     </SafeAreaView>
   );

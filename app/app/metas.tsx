@@ -1,8 +1,10 @@
 import FormCadastroMeta from "@/components/formCadastroMeta";
+import HistoricoMetas from "@/components/historicoMetas";
 import MetaAtual from "@/components/metaAtual";
 import Header from "@/components/ui/header";
 import NavBar from "@/components/ui/navbar";
-import { getMetaAtual } from "@/services/metaService";
+import { Meta } from "@/interfaces/Meta";
+import { getHistoricoMetas, getMetaAtual } from "@/services/metaService";
 import { getGanhoMes } from "@/services/vendasService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
@@ -10,8 +12,9 @@ import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Metas() {
-  const [meta, setMeta] = useState<any>(null);
-  const [qtdVendasRealizadas, setQtdVendasRealizadas] = useState(0); // Mudou de ganhos para quantidade
+  const [meta, setMeta] = useState<Meta | null>(null);
+  const [historico, setHistorico] = useState<Meta[]>([]);
+  const [qtdVendasRealizadas, setQtdVendasRealizadas] = useState(0);
   const [carregando, setCarregando] = useState(true);
 
   const carregarDados = async () => {
@@ -21,13 +24,15 @@ export default function Metas() {
       if (!usuarioString) return;
       const usuario = JSON.parse(usuarioString);
 
-      const [metaData, ganhosData] = await Promise.all([
+      const [metaData, ganhosData, historicoData] = await Promise.all([
         getMetaAtual(usuario.id).catch(() => null),
-        getGanhoMes().catch(() => ({ quantidadeVendas: 0 })), // Garante um fallback
+        getGanhoMes().catch(() => ({ quantidadeVendas: 0 })),
+        getHistoricoMetas().catch(() => []),
       ]);
 
       setMeta(metaData);
-      setQtdVendasRealizadas(ganhosData.quantidadeVendas || 0); // Pega a QUANTIDADE e não o R$
+      setQtdVendasRealizadas(ganhosData.quantidadeVendas || 0);
+      setHistorico(historicoData);
     } catch (error) {
       console.error(error);
     } finally {
@@ -39,7 +44,6 @@ export default function Metas() {
     carregarDados();
   }, []);
 
-  // MATEMÁTICA DA META
   const alvo = meta ? meta.qtd_vendas_alvo : 0;
   let porcentagem = 0;
   let diasRestantes = 0;
@@ -47,7 +51,6 @@ export default function Metas() {
   if (meta && alvo > 0) {
     porcentagem = Math.min((qtdVendasRealizadas / alvo) * 100, 100);
 
-    // Calcula os dias restantes com base na dta_final
     const dataPrazo = new Date(meta.dta_final);
     const dataHoje = new Date();
     const diferencaTempo = dataPrazo.getTime() - dataHoje.getTime();
@@ -74,6 +77,8 @@ export default function Metas() {
           )}
 
           <FormCadastroMeta onSave={carregarDados} />
+
+          {!carregando && <HistoricoMetas metas={historico} />}
         </View>
       </ScrollView>
       <NavBar />
@@ -82,7 +87,10 @@ export default function Metas() {
 }
 
 const style = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#eef6ff" },
+  container: {
+    flex: 1,
+    backgroundColor: "#eef6ff",
+  },
   container_content: {
     flex: 1,
     paddingTop: 20,

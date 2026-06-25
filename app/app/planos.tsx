@@ -1,6 +1,6 @@
 import FormCadastroPlano from "@/components/formCadastroPlano";
-import Header from "@/components/ui/header"; // Ajuste o caminho se necessário
-import NavBar from "@/components/ui/navbar"; // Ajuste o caminho se necessário
+import Header from "@/components/ui/header";
+import NavBar from "@/components/ui/navbar";
 import { Plano } from "@/interfaces/Plano";
 import { deletePlano, getPlanos } from "@/services/planoService";
 import React, { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ export default function Planos() {
   const [planos, setPlanos] = useState<Plano[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [planoEmEdicao, setPlanoEmEdicao] = useState<Plano | null>(null);
 
   const carregarPlanos = async () => {
     try {
@@ -48,13 +49,23 @@ export default function Planos() {
         onPress: async () => {
           try {
             await deletePlano(id);
-            carregarPlanos(); // Atualiza a lista após excluir
+            carregarPlanos();
           } catch (error) {
             Alert.alert("Erro", "Não foi possível excluir o plano.");
           }
         },
       },
     ]);
+  };
+
+  const abrirModalCadastro = () => {
+    setPlanoEmEdicao(null);
+    setModalVisivel(true);
+  };
+
+  const abrirModalEdicao = (plano: Plano) => {
+    setPlanoEmEdicao(plano);
+    setModalVisivel(true);
   };
 
   return (
@@ -76,6 +87,27 @@ export default function Planos() {
           ) : (
             planos.map((plano) => (
               <View key={plano._id} style={style.card_plano}>
+                <TouchableOpacity
+                  style={style.btn_edit}
+                  onPress={() => abrirModalEdicao(plano)}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Svg
+                    width={18}
+                    height={18}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="#0369A1"
+                  >
+                    <Path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
                 <TouchableOpacity
                   style={style.btn_delete}
                   onPress={() => handleExcluir(plano._id)}
@@ -100,7 +132,6 @@ export default function Planos() {
                 <View style={style.info_plano}>
                   <Text style={style.plano_title}>{plano.tipo_plano}</Text>
                   <Text style={style.plano_valor}>
-                    {/* Formata para R$ 0.00 */}
                     {Number(plano.valor).toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
@@ -113,12 +144,8 @@ export default function Planos() {
         </View>
       </ScrollView>
 
-      {/* Botão Flutuante (reaproveitando estilo do seu arquivo de Clientes) */}
       <View style={style.botao_flutuante}>
-        <TouchableOpacity
-          style={style.btn_add}
-          onPress={() => setModalVisivel(true)}
-        >
+        <TouchableOpacity style={style.btn_add} onPress={abrirModalCadastro}>
           <Svg
             width={24}
             height={24}
@@ -138,7 +165,6 @@ export default function Planos() {
 
       <NavBar />
 
-      {/* Modal de Cadastro */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -152,9 +178,10 @@ export default function Planos() {
             activeOpacity={1}
           />
           <FormCadastroPlano
+            planoParaEditar={planoEmEdicao}
             onSuccess={() => {
               setModalVisivel(false);
-              carregarPlanos(); // Recarrega após cadastrar com sucesso
+              carregarPlanos();
             }}
           />
         </View>
@@ -196,6 +223,16 @@ const style = StyleSheet.create({
   },
   plano_valor: { fontSize: 18, fontWeight: "600", color: "#0F2B5B" },
 
+  btn_edit: {
+    position: "absolute",
+    top: 15,
+    right: 50,
+    zIndex: 10,
+    elevation: 10,
+    padding: 5,
+    backgroundColor: "#E0F2FE",
+    borderRadius: 8,
+  },
   btn_delete: {
     position: "absolute",
     top: 15,

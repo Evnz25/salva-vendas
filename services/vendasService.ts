@@ -30,3 +30,13 @@ export const getGanhoGeralMes = async () => {
     throw err;
   }
 };
+
+export const getHistoricoVendas = async () => {
+  try {
+    const response = await api.get("/vendas/historico");
+    return response.data;
+  } catch (err) {
+    console.error("Erro ao consultar o histórico de vendas: ", err);
+    throw err;
+  }
+};

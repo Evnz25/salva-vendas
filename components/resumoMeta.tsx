@@ -1,19 +1,9 @@
+import { ResumoMeta } from "@/interfaces/ResumoMeta";
 import { StyleSheet, Text, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import ProgressBar from "./ui/progressBar";
 
-// 1. Criamos a tipagem correta
-type ResumoMetaProps = {
-  percentage: number;
-  value: number;
-  meta: number;
-};
-
-export default function ResumoMeta({
-  percentage,
-  value,
-  meta,
-}: ResumoMetaProps) {
+export default function ResumoMeta({ percentage, value, meta }: ResumoMeta) {
   return (
     <View style={style.container}>
       <View style={style.container_title}>
@@ -34,14 +24,12 @@ export default function ResumoMeta({
           </Svg>
         </View>
         <Text style={style.font_title}>Meta Atual</Text>
-        {/* Usamos toFixed(0) para não mostrar casas decimais na porcentagem */}
         <Text style={style.font_percentage}>{percentage.toFixed(0)}%</Text>
       </View>
       <View style={style.container_bar}>
         <ProgressBar percentage={percentage} color={"#1A3F7A"} />
       </View>
       <View style={style.container_title_values}>
-        {/* 2. Removemos o R$ e o .toFixed(2) já que é quantidade de vendas */}
         <Text style={style.font_value}>{value} Vendas</Text>
         <Text style={style.font_value}>{meta} Vendas</Text>
       </View>
@@ -70,8 +58,8 @@ const style = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 10,
     paddingLeft: 10,
-    justifyContent: "space-between", // Empurra um texto pra cada lado
-    paddingRight: 30, // Dá uma margem na direita
+    justifyContent: "space-between",
+    paddingRight: 30,
   },
   container_svg: {
     width: 24,
@@ -95,7 +83,7 @@ const style = StyleSheet.create({
   },
   font_percentage: {
     paddingTop: 2,
-    marginLeft: "auto", // Joga a porcentagem para o canto direito
+    marginLeft: "auto",
     paddingRight: 20,
     fontSize: 25,
     fontWeight: "bold",

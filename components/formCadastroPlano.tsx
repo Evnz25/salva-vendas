@@ -1,6 +1,6 @@
 import { Plano } from "@/interfaces/Plano";
-import { postPlano } from "@/services/planoService";
-import React, { useState } from "react";
+import { postPlano, putPlano } from "@/services/planoService";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -11,14 +11,28 @@ import {
   View,
 } from "react-native";
 
+type Props = {
+  onSuccess: () => void;
+  planoParaEditar?: Plano | null;
+};
+
 export default function FormCadastroPlano({
   onSuccess,
-}: {
-  onSuccess: () => void;
-}) {
+  planoParaEditar,
+}: Props) {
   const [tipoPlano, setTipoPlano] = useState("");
   const [valor, setValor] = useState("");
   const [salvando, setSalvando] = useState(false);
+
+  useEffect(() => {
+    if (planoParaEditar) {
+      setTipoPlano(planoParaEditar.tipo_plano);
+      setValor(planoParaEditar.valor.toString());
+    } else {
+      setTipoPlano("");
+      setValor("");
+    }
+  }, [planoParaEditar]);
 
   const handleSalvar = async () => {
     if (!tipoPlano || !valor) {
@@ -36,15 +50,24 @@ export default function FormCadastroPlano({
     try {
       setSalvando(true);
 
-      const novoPlano = {
-        tipo_plano: tipoPlano,
-        valor: valorNumerico,
-        status: "ativo",
-      } as Plano;
+      if (planoParaEditar) {
+        const planoAtualizado: Plano = {
+          ...planoParaEditar,
+          tipo_plano: tipoPlano,
+          valor: valorNumerico,
+        };
+        await putPlano(planoAtualizado);
+        Alert.alert("Sucesso!", "Plano atualizado com sucesso.");
+      } else {
+        const novoPlano = {
+          tipo_plano: tipoPlano,
+          valor: valorNumerico,
+          status: "ativo",
+        } as Plano;
+        await postPlano(novoPlano);
+        Alert.alert("Sucesso!", "Plano criado com sucesso.");
+      }
 
-      await postPlano(novoPlano);
-
-      Alert.alert("Sucesso!", "Plano criado com sucesso.");
       onSuccess();
     } catch (error: any) {
       Alert.alert("Erro", "Falha ao salvar o plano.");
@@ -55,7 +78,10 @@ export default function FormCadastroPlano({
 
   return (
     <View style={style.container}>
-      <Text style={style.font_title}>Novo Plano de Serviço</Text>
+      {/* Título dinâmico */}
+      <Text style={style.font_title}>
+        {planoParaEditar ? "Editar Plano" : "Novo Plano de Serviço"}
+      </Text>
 
       <View style={style.container_form}>
         <Text style={style.font_label}>Nome do Plano</Text>
@@ -87,7 +113,9 @@ export default function FormCadastroPlano({
           {salvando ? (
             <ActivityIndicator size="small" color="#FFFFFF" />
           ) : (
-            <Text style={style.button_text}>Salvar Plano</Text>
+            <Text style={style.button_text}>
+              {planoParaEditar ? "Atualizar Plano" : "Salvar Plano"}
+            </Text>
           )}
         </TouchableOpacity>
       </View>

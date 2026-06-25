@@ -54,7 +54,6 @@ export default function GraficoVendas({ dados }: GraficoVendasProps) {
   const barData = dados.map((item) => {
     return {
       value: item.totalGanhos,
-      // Se o Mongo mandar mes: 3. O JS vai pegar nomesMeses[2], que é "Mar"
       label: meses[item._id.mes - 1],
     };
   });

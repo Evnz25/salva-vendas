@@ -49,7 +49,6 @@ export default function Login() {
             </Text>
           </View>
 
-          {/* Formulário (Card Branco) */}
           <View style={style.card_form}>
             <View style={style.input_group}>
               <Text style={style.label}>E-mail</Text>
@@ -96,7 +95,6 @@ export default function Login() {
               </TouchableOpacity>
             </View>
 
-            {/* NOVO LINK DE CADASTRO AQUI (Abaixo do botão de entrar) */}
             <View style={style.footer_link}>
               <Text style={style.footer_text}>Não possui uma conta? </Text>
               <TouchableOpacity
@@ -115,7 +113,7 @@ export default function Login() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eef6ff", // Mesma cor de fundo do seu projeto
+    backgroundColor: "#eef6ff",
   },
 
   keyboard_container: {
@@ -137,7 +135,7 @@ const style = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#0A1628", // Cor padrão dos títulos do seu App
+    color: "#0A1628",
     marginBottom: 8,
   },
 
@@ -156,7 +154,7 @@ const style = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 4, // Sombra padrão que você usa nos cards
+    elevation: 4,
   },
 
   input_group: {
@@ -205,7 +203,7 @@ const style = StyleSheet.create({
 
   forgot_password_text: {
     fontSize: 12,
-    color: "#0F2B5B", // Cor de destaque
+    color: "#0F2B5B",
     fontWeight: "600",
   },
 
@@ -214,7 +212,7 @@ const style = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#0F2B5B", // Azul escuro padrão
+    backgroundColor: "#0F2B5B",
     height: 45,
     borderRadius: 8,
     justifyContent: "center",

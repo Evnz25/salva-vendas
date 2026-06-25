@@ -20,3 +20,13 @@ export const getMetaAtual = async (id: string) => {
     throw err;
   }
 };
+
+export const getHistoricoMetas = async () => {
+  try {
+    const response = await api.get("/metas/historico");
+    return response.data;
+  } catch (err) {
+    console.error("Erro ao buscar histórico de metas:", err);
+    throw err;
+  }
+};

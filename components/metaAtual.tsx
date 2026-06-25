@@ -52,7 +52,6 @@ export default function MetaAtual({
         <View style={style.container_barbox}>
           <View style={style.container_values}>
             <Text style={style.font_barname}>Progresso</Text>
-            {/* toFixed(0) garante que não tenha números quebrados na interface */}
             <Text style={style.font_percentage}>{percentage.toFixed(0)}%</Text>
           </View>
 
@@ -101,11 +100,10 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
 
-  // 🚀 MUDANÇAS AQUI PARA DEIXAR RESPONSIVO AOS DADOS DO BANCO:
   container_values: {
     flexDirection: "row",
-    justifyContent: "space-between", // Empurra o "Progresso" pra esquerda e a "%" pra direita
-    paddingHorizontal: 25, // Mantém uma margem segura das bordas
+    justifyContent: "space-between",
+    paddingHorizontal: 25,
     alignItems: "center",
   },
   container_bar: {
@@ -115,7 +113,7 @@ const style = StyleSheet.create({
   },
   container_valuesmax: {
     flexDirection: "row",
-    justifyContent: "space-between", // Separa as vendas de forma dinâmica
+    justifyContent: "space-between",
     paddingHorizontal: 25,
   },
 

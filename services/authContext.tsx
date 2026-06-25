@@ -15,7 +15,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    // Ao abrir o app, verifica se já existe um token salvo
     async function carregarToken() {
       try {
         const tokenSalvo = await AsyncStorage.getItem("@token_jwt");

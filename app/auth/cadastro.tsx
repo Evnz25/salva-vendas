@@ -55,21 +55,14 @@ export default function Cadastro({ navigation }: any) {
           {
             text: "Fazer Login",
             onPress: () => {
-              // Mudamos de push para replace e colocamos o 'as any' para garantir que o Expo Router execute o redirecionamento
               router.replace("/auth/login" as any);
             },
           },
         ],
-        { cancelable: false }, // Impede o usuário de fechar o alerta clicando fora dele, forçando-o a clicar no botão
+        { cancelable: false },
       );
     } catch (error: any) {
-      const mensagemServidor =
-        error.response?.data?.detalhe || // Tenta pegar o "detalhe"
-        error.response?.data?.erro || // Se não tiver, tenta pegar o "erro"
-        "Erro ao realizar cadastro. Verifique sua conexão."; // Fallback genérico
-
-      Alert.alert("Ops!", mensagemServidor);
-      console.error("Erro completo:", error.response?.data); // Joga no terminal para você ver
+      console.error("Erro completo:", error.response?.data);
     } finally {
       setCarregando(false);
     }
@@ -165,7 +158,6 @@ export default function Cadastro({ navigation }: any) {
               </TouchableOpacity>
             </View>
 
-            {/* Link para voltar ao Login */}
             <View style={style.footer_link}>
               <Text style={style.footer_text}>Já possui uma conta? </Text>
               <TouchableOpacity
@@ -196,7 +188,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 30, // Dá um respiro extra em telas menores
+    paddingVertical: 30,
   },
 
   header: {
