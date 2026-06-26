@@ -244,19 +244,14 @@ const style = StyleSheet.create({
     borderRadius: 8,
   },
 
-  botao_flutuante: { position: "absolute", bottom: 80, right: 30 },
+  botao_flutuante: { position: "absolute", bottom: 130, right: 30 },
   btn_add: {
-    backgroundColor: "#0F2B5B",
     width: 60,
     height: 60,
-    borderRadius: 30,
-    justifyContent: "center",
+    backgroundColor: "#0F2B5B",
+    borderRadius: 17,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 6,
+    justifyContent: "center",
   },
 
   modalOverlay: {

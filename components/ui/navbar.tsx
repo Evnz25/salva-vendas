@@ -5,8 +5,7 @@ import Svg, { Path } from "react-native-svg";
 export default function NavBar() {
   return (
     <View style={styles.container}>
-      {/* Início */}
-      <Link href={"/app" as any} asChild>
+      <Link href={"/" as any} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -26,8 +25,7 @@ export default function NavBar() {
         </TouchableOpacity>
       </Link>
 
-      {/* Clientes */}
-      <Link href={"/app/clientes"} asChild>
+      <Link href={"/clientes"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -47,8 +45,7 @@ export default function NavBar() {
         </TouchableOpacity>
       </Link>
 
-      {/* Planos */}
-      <Link href={"/app/planos"} asChild>
+      <Link href={"/planos"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -68,8 +65,7 @@ export default function NavBar() {
         </TouchableOpacity>
       </Link>
 
-      {/* Vendas (Novo Item) */}
-      <Link href={"/app/vendas"} asChild>
+      <Link href={"/vendas"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -89,8 +85,7 @@ export default function NavBar() {
         </TouchableOpacity>
       </Link>
 
-      {/* Metas */}
-      <Link href={"/app/metas"} asChild>
+      <Link href={"/metas"} asChild>
         <TouchableOpacity style={styles.container_icons}>
           <Svg
             width={24}
@@ -134,7 +129,7 @@ const styles = StyleSheet.create({
   },
 
   font_icons: {
-    fontSize: 10, // Diminuí um pouco a fonte (de 12 para 10) para caberem 5 itens sem espremer muito no mobile
+    fontSize: 10,
     fontWeight: "bold",
     color: "#0F2B5B",
   },

@@ -11,6 +11,16 @@ export const postVenda = async (vendaData: Venda) => {
   }
 };
 
+export const deleteVenda = async (id: string) => {
+  try {
+    const response = await api.delete(`/vendas/${id}`);
+    return response.data;
+  } catch (err) {
+    console.error("Erro ao deletar venda:", err);
+    throw err;
+  }
+};
+
 export const getGanhoMes = async () => {
   try {
     const response = await api.get("/ganhos-mes");

@@ -28,7 +28,7 @@ export default function Login() {
 
       await login(resposta.data.token, resposta.data.usuario);
 
-      router.replace("/app" as any);
+      router.replace("/" as any);
     } catch (error) {
       Alert.alert("Erro", "E-mail ou senha incorretos.");
     }
@@ -44,9 +44,6 @@ export default function Login() {
           {/* Cabeçalho / Logo */}
           <View style={style.header}>
             <Text style={style.title}>Bem-vindo</Text>
-            <Text style={style.subtitle}>
-              Faça login para acessar o sistema
-            </Text>
           </View>
 
           <View style={style.card_form}>
@@ -74,12 +71,6 @@ export default function Login() {
                 onChangeText={setSenha}
               />
             </View>
-
-            <TouchableOpacity style={style.forgot_password}>
-              <Text style={style.forgot_password_text}>
-                Esqueceu sua senha?
-              </Text>
-            </TouchableOpacity>
 
             <View style={style.container_button}>
               <TouchableOpacity

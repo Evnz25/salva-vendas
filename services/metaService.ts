@@ -30,3 +30,13 @@ export const getHistoricoMetas = async () => {
     throw err;
   }
 };
+
+export const deleteMeta = async (id: string) => {
+  try {
+    const response = await api.delete(`/metas/${id}`);
+    return response.data;
+  } catch (err) {
+    console.error("Erro ao deletar a meta:", err);
+    throw err;
+  }
+};

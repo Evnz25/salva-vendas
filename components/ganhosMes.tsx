@@ -26,26 +26,6 @@ export default function GanhosMes(props: any) {
         <View style={style.container_value}>
           <Text style={style.font_value}>R$ {props.value.toFixed(2)}</Text>
         </View>
-        <View style={style.container_comparative}>
-          <View style={style.container_increase}>
-            <Svg
-              width={14}
-              height={14}
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke={"#05DF72"}
-            >
-              <Path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941"
-              />
-            </Svg>
-            <Text style={style.font_increase}>{props.increase}%</Text>
-          </View>
-          <Text style={style.font_comparative}>vs mês anterior</Text>
-        </View>
       </LinearGradient>
     </View>
   );

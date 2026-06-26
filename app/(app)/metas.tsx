@@ -4,11 +4,21 @@ import MetaAtual from "@/components/metaAtual";
 import Header from "@/components/ui/header";
 import NavBar from "@/components/ui/navbar";
 import { Meta } from "@/interfaces/Meta";
-import { getHistoricoMetas, getMetaAtual } from "@/services/metaService";
+import {
+  deleteMeta,
+  getHistoricoMetas,
+  getMetaAtual,
+} from "@/services/metaService";
 import { getGanhoMes } from "@/services/vendasService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Metas() {
@@ -38,6 +48,24 @@ export default function Metas() {
     } finally {
       setCarregando(false);
     }
+  };
+
+  const handleExcluirMeta = (id: string) => {
+    Alert.alert("Atenção", "Deseja realmente excluir esta meta do histórico?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Excluir",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteMeta(id);
+            carregarDados();
+          } catch (error) {
+            Alert.alert("Erro", "Não foi possível excluir a meta.");
+          }
+        },
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -78,7 +106,9 @@ export default function Metas() {
 
           <FormCadastroMeta onSave={carregarDados} />
 
-          {!carregando && <HistoricoMetas metas={historico} />}
+          {!carregando && (
+            <HistoricoMetas metas={historico} onDelete={handleExcluirMeta} />
+          )}
         </View>
       </ScrollView>
       <NavBar />

@@ -43,15 +43,15 @@ export default function () {
             </View>
           ) : (
             clientesTotal.map((cliente) => (
-              <ClientInformation cliente={cliente} />
+              <ClientInformation key={cliente._id} cliente={cliente} />
             ))
           )}
         </View>
       </ScrollView>
+      <NavBar />
       <View style={style.botao_flutuante}>
         <ButtonAddClient onPress={() => setModalVisivel(true)} />
       </View>
-      <NavBar />
       <Modal
         animationType="slide"
         transparent={true}
@@ -87,8 +87,9 @@ const style = StyleSheet.create({
 
   botao_flutuante: {
     position: "absolute",
-    bottom: 80,
+    bottom: 130,
     right: 30,
+    elevation: 999,
   },
 
   modalOverlay: {

@@ -1,9 +1,13 @@
-import { ResumoMeta } from "@/interfaces/ResumoMeta";
+import { ResumoMetaProps } from "@/interfaces/ResumoMetaProps";
 import { StyleSheet, Text, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import ProgressBar from "./ui/progressBar";
 
-export default function ResumoMeta({ percentage, value, meta }: ResumoMeta) {
+export default function ResumoMeta({
+  percentage,
+  value,
+  meta,
+}: ResumoMetaProps) {
   return (
     <View style={style.container}>
       <View style={style.container_title}>

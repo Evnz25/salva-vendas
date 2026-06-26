@@ -11,14 +11,15 @@ export default function UltimosClientes({ clientes }: UltimosClientesProps) {
     <View style={style.container}>
       <View style={style.container_title}>
         <Text style={style.font_title}>Últimos Clientes Cadastrados</Text>
-        <Text style={style.font_also}>Ver todos {`>`}</Text>
       </View>
       {clientes.length === 0 ? (
         <View style={{ padding: 20, alignItems: "center" }}>
           <ActivityIndicator size="small" color="#0A1628" />
         </View>
       ) : (
-        clientes.map((cliente) => <ClientInformation cliente={cliente} />)
+        clientes.map((cliente) => (
+          <ClientInformation key={cliente._id} cliente={cliente} />
+        ))
       )}
     </View>
   );

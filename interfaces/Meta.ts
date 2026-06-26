@@ -1,4 +1,5 @@
 export type Meta = {
+  _id?: string;
   dta_final: Date;
   status: boolean;
   qtd_vendas_alvo: number;
