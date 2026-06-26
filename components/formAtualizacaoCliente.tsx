@@ -1,5 +1,5 @@
 import { Cliente } from "@/interfaces/Cliente";
-import { postCliente } from "@/services/clienteService";
+import { putCliente } from "@/services/clienteService";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 import {
@@ -12,20 +12,24 @@ import {
 } from "react-native";
 import MaskInput, { Masks } from "react-native-mask-input";
 import ButtonSave from "./ui/buttonSave";
-import { PlanStatus } from "./ui/planName";
 
 type FormPros = {
   onSucess: () => void;
+  cliente: Cliente;
 };
 
-export default function FormCadastroCliente({ onSucess }: FormPros) {
+export default function FormAtualizacaoCliente({
+  onSucess,
+  cliente,
+}: FormPros) {
   const svgPath =
     "M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z";
-  const [id, setId] = useState("");
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [statusPlano, setStatusPlano] = useState<PlanStatus>("EM_NEGOCIACAO");
+  const [id, setId] = useState(cliente._id);
+  const [nome, setNome] = useState(cliente.nome);
+  const [email, setEmail] = useState(cliente.email);
+  const [telefone, setTelefone] = useState(cliente.telefone);
+  const [statusPlano, setStatusPlano] = useState(cliente.status);
+
   const [salvando, setSalvando] = useState(false);
 
   const handleSalvar = async () => {
@@ -34,21 +38,19 @@ export default function FormCadastroCliente({ onSucess }: FormPros) {
       return;
     }
 
-    const telefoneLimpo = telefone.replace(/\D/g, "");
-
-    const novoCliente: Cliente = {
+    const atualizacaoCliente: Cliente = {
       _id: id,
       nome: nome,
-      telefone: telefoneLimpo,
-      email: email.trim().toLowerCase(),
+      telefone: telefone,
+      email: email,
       status: statusPlano,
     };
 
     try {
       setSalvando(true);
-      await postCliente(novoCliente);
+      await putCliente(atualizacaoCliente);
 
-      Alert.alert("Sucesso!", "Cliente novo cadastrado com sucesso.");
+      Alert.alert("Sucesso!", "Cliente atualizado com sucesso.");
       onSucess();
     } catch (err) {
       Alert.alert("Erro!", "Houve um erro ao cadastrar o cliente.");
@@ -56,6 +58,7 @@ export default function FormCadastroCliente({ onSucess }: FormPros) {
       setSalvando(false);
     }
   };
+
   return (
     <View style={style.container}>
       <Text style={style.font_title}>Cadastrar Novo Cliente</Text>
@@ -65,6 +68,7 @@ export default function FormCadastroCliente({ onSucess }: FormPros) {
         <TextInput
           style={style.font_input}
           placeholder="Nome"
+          value={nome}
           placeholderTextColor={"#A0AEC0"}
           onChangeText={setNome}
         />
@@ -74,12 +78,12 @@ export default function FormCadastroCliente({ onSucess }: FormPros) {
       <View style={style.container_form}>
         <MaskInput
           style={style.font_input}
-          value={telefone}
           onChangeText={(masked) => {
             setTelefone(masked);
           }}
           mask={Masks.BRL_PHONE}
           placeholder="(00) 0000-0000"
+          value={telefone}
           placeholderTextColor={"#A0AEC0"}
         />
       </View>
@@ -90,6 +94,7 @@ export default function FormCadastroCliente({ onSucess }: FormPros) {
           style={style.font_input}
           placeholder="exemplo@gmail.com"
           placeholderTextColor={"#A0AEC0"}
+          value={email}
           onChangeText={setEmail}
         />
       </View>

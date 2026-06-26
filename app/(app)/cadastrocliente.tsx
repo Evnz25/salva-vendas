@@ -1,21 +1,14 @@
-import FormCadastroMeta from "@/components/formCadastroMeta";
-import MetaAtual from "@/components/metaAtual";
 import Header from "@/components/ui/header";
-import NavBar from "@/components/ui/navbar";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Metas() {
+export default function CadastroCliente() {
   return (
     <SafeAreaView style={style.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Header title={"Metas"}></Header>
-        <View style={style.container_content}>
-          <MetaAtual percentage={89} value={24600} meta={30000} />
-          <FormCadastroMeta />
-        </View>
+        <Header title={"Novo Cliente"}></Header>
+        <View style={style.container_content}></View>
       </ScrollView>
-      <NavBar />
     </SafeAreaView>
   );
 }

@@ -1,9 +1,13 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-export default function ButtonAddClient() {
+export default function ButtonAddClient({ onPress }: any) {
   return (
-    <TouchableOpacity style={style.container} activeOpacity={0.8}>
+    <TouchableOpacity
+      style={style.container}
+      activeOpacity={0.8}
+      onPress={onPress}
+    >
       <Svg
         width={20}
         height={20}
@@ -13,8 +17,8 @@ export default function ButtonAddClient() {
         stroke={"#FFFF"}
       >
         <Path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           d="M12 4.5v15m7.5-7.5h-15"
         />
       </Svg>

@@ -11,9 +11,9 @@ import { Cliente } from "@/interfaces/Cliente";
 import { TipoGanhoGeralMes } from "@/interfaces/GanhoGeralMes";
 import { TipoGanhoMes } from "@/interfaces/GanhoMes";
 import { getClientesRecentes } from "@/services/clienteService";
-import { getMetaAtual } from "@/services/metaService"; // NOVA IMPORTAÇÃO
+import { getMetaAtual } from "@/services/metaService";
 import { getGanhoGeralMes, getGanhoMes } from "@/services/vendasService";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // NOVA IMPORTAÇÃO
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
@@ -22,7 +22,7 @@ export default function Dashboard() {
     null,
   );
   const [clientesRecentes, setClientesRecentes] = useState<Cliente[]>([]);
-  const [meta, setMeta] = useState<any>(null); // NOVO STATE PARA A META
+  const [meta, setMeta] = useState<any>(null);
 
   useEffect(() => {
     const buscarGanhos = async () => {
@@ -60,7 +60,6 @@ export default function Dashboard() {
     buscarClientes();
   }, []);
 
-  // NOVO USEFFECT PARA BUSCAR A META
   useEffect(() => {
     const buscarMeta = async () => {
       try {
@@ -70,14 +69,11 @@ export default function Dashboard() {
 
         const metaData = await getMetaAtual(usuario.id);
         setMeta(metaData);
-      } catch (error) {
-        // Ignoramos o console.error aqui caso o usuário simplesmente não tenha meta cadastrada ainda
-      }
+      } catch (error) {}
     };
     buscarMeta();
   }, []);
 
-  // MATEMÁTICA DA META
   const alvo = meta ? meta.qtd_vendas_alvo : 0;
   const qtdVendasRealizadas = ganhoMensalData
     ? ganhoMensalData.quantidadeVendas
@@ -100,8 +96,6 @@ export default function Dashboard() {
           <GraficoVendas
             dados={ganhosMensais ? ganhosMensais.historicoMensal : null}
           />
-
-          {/* AQUI PASSAMOS OS DADOS DINÂMICOS CALCULADOS */}
           <ResumoMeta
             percentage={porcentagem}
             value={qtdVendasRealizadas}
@@ -111,7 +105,7 @@ export default function Dashboard() {
           <UltimosClientes clientes={clientesRecentes} />
         </View>
       </ScrollView>
-      <NavBar></NavBar>
+      <NavBar />
     </SafeAreaView>
   );
 }
@@ -127,6 +121,6 @@ const style = StyleSheet.create({
     paddingTop: 20,
     gap: 20,
     alignItems: "center",
-    paddingBottom: 100, // Adicionado um respiro no fundo para o NavBar não sobrepor os clientes
+    paddingBottom: 100,
   },
 });
