@@ -112,7 +112,6 @@ export default function FormAtualizacaoCliente({
             }}
             mode="dropdown"
           >
-            <Picker.Item label="Prospecção" value="PROSPECCAO" />
             <Picker.Item label="Em Negociação" value="EM_NEGOCIACAO" />
             <Picker.Item label="Contrato Assinado" value="CONTRATO_ASSINADO" />
             <Picker.Item label="Cancelado" value="CANCELADO" />

@@ -241,8 +241,8 @@ export default function Vendas() {
                           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                         >
                           <Svg
-                            width={16}
-                            height={16}
+                            width={12}
+                            height={12}
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
@@ -448,7 +448,7 @@ const style = StyleSheet.create({
 
   btn_delete: {
     position: "absolute",
-    top: 15,
+    top: 8,
     right: 10,
     zIndex: 10,
     padding: 6,

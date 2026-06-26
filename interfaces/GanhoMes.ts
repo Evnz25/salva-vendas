@@ -1,4 +1,4 @@
-export type TipoGanhoMes = {
+export interface TipoGanhoMes {
   totalGanhos: number;
   quantidadeVendas: number;
-};
+}

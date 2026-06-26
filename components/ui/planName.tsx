@@ -1,10 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export type PlanStatus =
-  | "CONTRATO_ASSINADO"
-  | "EM_NEGOCIACAO"
-  | "CANCELADO"
-  | "PROSPECCAO";
+export type PlanStatus = "CONTRATO_ASSINADO" | "EM_NEGOCIACAO" | "CANCELADO";
 
 const PLAN_CONFIG = {
   CONTRATO_ASSINADO: {
@@ -21,11 +17,6 @@ const PLAN_CONFIG = {
     label: "Cancelado",
     bgColor: "#FEE2E2",
     textColor: "#991B1B",
-  },
-  PROSPECCAO: {
-    label: "Prospecção",
-    bgColor: "#E0F2FE",
-    textColor: "#0369A1",
   },
 };
 
